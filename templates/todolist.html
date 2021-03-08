@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+  
+     <div class="row mb-5">
+        {% if form %}
+         <div class="col-md-12">
+          <form action="{% url 'add_todo_list' %}" method="POST">
+              {% csrf_token %}
+              {{ form }}
+              <button type="submit" class="btn btn-primnary">Add</button>
+          </form>
+         </div>
+         {% endif %}
+     </div>
+   
+
+
+<!----------------------------------------------------------------------------------->
+
+
+
+    <div class="row">
+
+
+
+ <!------------------------------pending start----------------------------------->
+
+    <div class="col-md-4">
+    <div class="card" style="width: 18rem;">
+    
+        <div class="card-header">
+        Pending (<span style="color:red">{{ my_todo_list_pending_count }}</span>)
+        </div>
+    
+    {% if my_todo_list_pending_count > 0 %}
+          <table class="table">
+          <thead>
+          <tr>
+         
+          </tr>
+          </thead>
+          <tbody>
+          {% for todo in my_todo_list_pending %}
+            <tr>      
+            <td>{{ todo.user }}</td>
+            <td><a href="{% url 'todo-list-evaluation' todo.id 'working' %}"><button class="btn btn-primary btn-sm">Move to Work</button></a></td>
+            </tr>
+          {% endfor %}  
+          </tbody>
+          </table>
+    {% endif %}
+</div>
+</div>
+
+<!----------------------------pending end----------------------------------------------------->
+
+<!-----------------------------working start-------------------------------------------------->
+
+
+<div class="col-md-4">
+<div class="card" style="width: 18rem;">
+
+    <div class="card-header">
+    Working (<span style="color:blue">{{ working_todo_list_count }}</span>)
+    </div>
+
+{% if working_todo_list_count > 0 %}
+     <table class="table">
+     <thead>
+      <tr>
+     
+      </tr>
+     </thead>
+     <tbody>
+    {% for todo in working_todo_list %}
+         <tr>
+         <td>{{ todo.user }}</td>
+         <td><a href="{% url 'todo-list-evaluation' todo.id 'done' %}"><button class="btn btn-primary btn-sm">Move to Done</button></a></td>
+         </tr>
+    {% endfor %} 
+    </tbody>
+     </table>
+{% endif %}
+</div>
+</div>
+
+
+<!---------------------------working end----------------------------------------------->
+
+<!----------------------------done start--------------------------------------------->
+
+<div class="col-md-4">
+    <div class="card" style="width: 18rem;">
+    
+        <div class="card-header">
+        Done (<span style="color:green">{{ done_todo_list_count }}</span>)
+        </div>
+    
+    {% if done_todo_list_count > 0 %}
+         <table class="table">
+         <thead>
+          <tr>
+         
+          </tr>
+         </thead>
+         <tbody>
+        {% for todo in done_todo_list %}
+             <tr>
+             <td>{{ todo.user|title }}</td>
+             <td><button class="btn btn-outline-light btn-sm">Light</button></td>
+             </tr>
+        {% endfor %} 
+        </tbody>
+         </table>
+    {% endif %}
+    </div>
+    </div>
+
+<!-------------------------------------done end-------------------------------------------->
+</div>
+</div>
+
+
+
+{% endblock content %}
